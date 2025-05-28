@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>改善事例一覧</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>社内改善事例一覧</h1>
+    </header>
+
+    <main>
+        <aside class="sidebar">
+            <h2>検索・絞り込み</h2>
+            <div class="search-container">
+                <input type="text" id="keywordSearch" placeholder="キーワード検索...">
+            </div>
+            <div class="filter-container">
+                <h3>カテゴリ絞り込み</h3>
+                <div id="categoryFilters">
+                    <!-- カテゴリチェックボックスはJavaScriptで動的に生成します -->
+                </div>
+            </div>
+        </aside>
+
+        <section class="content">
+            <h2>事例一覧</h2>
+            <div id="caseList" class="case-list-container">
+                <!-- 事例はJavaScriptでここに表示されます -->
+                <p>事例を読み込み中です...</p>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>© 2025 新生電子㈱都城工場</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>

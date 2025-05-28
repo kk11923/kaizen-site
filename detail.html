@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>改善事例 詳細</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- html2pdf.js のCDNリンク (STEP 6 で使用) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js" integrity="sha512-GsLlZN/3F2ErC5ifS5QtgpiJtWd43JWSuIgh7mbzZ8zBps+dvLusV+eNQATqgA/HdeKFVgA5v3S/cIrLF7QnIg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+</head>
+<body>
+    <header>
+        <h1>改善事例 詳細</h1>
+    </header>
+
+    <main>
+        <div id="detailContent" class="detail-container">
+            <!-- 事例の詳細はJavaScriptでここに表示されます -->
+            <p>事例情報を読み込み中です...</p>
+        </div>
+        <div class="actions-container">
+            <button id="downloadPdfButton">このページをPDFでダウンロード</button>
+            <a href="index.html" class="back-button">一覧に戻る</a>
+        </div>
+    </main>
+
+    <footer>
+        <p>© 2024 あなたの会社名</p>
+    </footer>
+
+    <script>
+        // 詳細ページ専用のJavaScriptをここに記述します
+        document.addEventListener('DOMContentLoaded', () => {
+            const detailContentContainer = document.getElementById('detailContent');
+            const downloadPdfButton = document.getElementById('downloadPdfButton');
+            let currentCaseData = null; // 表示中の事例データを保持
+
+            // URLからIDパラメータを取得する関数
+            function getCaseIdFromUrl() {
+                const params = new URLSearchParams(window.location.search);
+                return params.get('id');
+            }
+
+            // JSONデータを読み込み、該当IDの事例を表示する関数
+            async function loadAndDisplayCase() {
+                const caseId = getCaseIdFromUrl();
+                if (!caseId) {
+                    detailContentContainer.innerHTML = '<p>事例IDが指定されていません。</p>';
+                    return;
+                }
+
+                try {
+                    const response = await fetch('data.json');
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    const allCases = await response.json();
+                    currentCaseData = allCases.find(item => item.id === caseId);
+
+                    if (currentCaseData) {
+                        displayCaseDetails(currentCaseData);
+                    } else {
+                        detailContentContainer.innerHTML = `<p>ID: ${caseId} の事例は見つかりませんでした。</p>`;
+                    }
+                } catch (error) {
+                    console.error('事例データの読み込みまたは表示に失敗しました:', error);
+                    detailContentContainer.innerHTML = '<p>事例データの読み込みに失敗しました。</p>';
+                }
+            }
+
+            // 事例詳細をHTMLにレンダリングする関数
+            function displayCaseDetails(caseData) {
+                // ページタイトルも更新
+                document.title = `改善事例 詳細 - ${caseData.summary || caseData.id}`;
+                
+                // カテゴリタグ
+                let categoriesHtml = '';
+                if (caseData.category && caseData.category.length > 0) {
+                    categoriesHtml = caseData.category.map(cat => `<span class="category-tag">${cat}</span>`).join(' ');
+                }
+
+                detailContentContainer.innerHTML = `
+                    <div class="detail-grid">
+                        <div class="detail-header">
+                            <h2>${caseData.summary || '概要なし'}</h2>
+                            <div class="categories">${categoriesHtml}</div>
+                        </div>
+
+                        <div class="detail-meta">
+                            <p><strong>指摘日:</strong> ${caseData.date_reported || '未設定'}</p>
+                            <p><strong>改善日:</strong> ${caseData.date_improved || '未設定'}</p>
+                            <p><strong>場所:</strong> ${caseData.location || '未設定'}</p>
+                            <p><strong>改善担当者:</strong> ${caseData.improver || '未設定'}</p>
+                        </div>
+                        
+                        <div class="detail-before">
+                            <h3>ビフォー</h3>
+                            ${caseData.before_image ? `<img src="${caseData.before_image}" alt="改善前">` : '<p>画像なし</p>'}
+                            <p class="problem-description">${caseData.problem_details || '問題点の詳細なし'}</p>
+                        </div>
+
+                        <div class="detail-after">
+                            <h3>アフター</h3>
+                            ${caseData.after_image ? `<img src="${caseData.after_image}" alt="改善後">` : '<p>画像なし</p>'}
+                            <p class="improvement-description">${caseData.improvement_details || '改善内容・効果の詳細なし'}</p>
+                        </div>
+                    </div>
+                `;
+            }
+
+                        // PDFダウンロード処理
+            function downloadAsPdf() {
+                if (!currentCaseData) { // currentCaseData は loadAndDisplayCase で設定される
+                    alert('事例データが読み込まれていません。');
+                    return;
+                }
+
+                const elementToPrint = document.getElementById('detailContent'); // PDF化する要素
+                const caseId = currentCaseData.id || 'unknown_id';
+                const caseSummary = currentCaseData.summary ? currentCaseData.summary.replace(/[\\/:*?"<>|.\s]/g, '_') : 'no_summary'; // ファイル名に使えない文字を置換、空白も置換
+                const filename = `改善事例_${caseId}_${caseSummary.substring(0, 30)}.pdf`; // ファイル名を生成、概要は長すぎると問題なので30文字に制限
+
+                // html2pdf.js のオプション
+                const opt = {
+                    margin:       [10, 15, 10, 15], // 上、右、下、左 のマージン (mm単位)
+                    filename:     filename,
+                    image:        { type: 'jpeg', quality: 0.98 }, // 画像の品質
+                    html2canvas:  { 
+                        scale: 2, // 解像度を上げる (デフォルトはブラウザの解像度)
+                        logging: true, // デバッグ用にログを出力
+                        useCORS: true // 外部ドメインの画像を使用する場合に必要
+                    },
+                    jsPDF:        { 
+                        unit: 'mm', // 単位
+                        format: 'a4', // 用紙サイズ
+                        orientation: 'portrait' // 縦向き ('landscape' で横向き)
+                    },
+                    pagebreak:    { mode: ['avoid-all', 'css', 'legacy'] } // 自動改ページモード
+                };
+
+                // PDF生成中のローディング表示などを入れたい場合はここ
+                downloadPdfButton.textContent = 'PDF生成中...';
+                downloadPdfButton.disabled = true;
+
+                html2pdf().from(elementToPrint).set(opt).save()
+                    .then(() => {
+                        console.log('PDFが正常に生成されました。');
+                        downloadPdfButton.textContent = 'このページをPDFでダウンロード';
+                        downloadPdfButton.disabled = false;
+                    })
+                    .catch(err => {
+                        console.error('PDF生成エラー:', err);
+                        alert('PDFの生成に失敗しました。');
+                        downloadPdfButton.textContent = 'このページをPDFでダウンロード';
+                        downloadPdfButton.disabled = false;
+                    });
+            }
+
+            // downloadPdfButton のイベントリスナーは既に設定済みのはず
+            // if (downloadPdfButton) {
+            //     downloadPdfButton.addEventListener('click', downloadAsPdf);
+            // }
+
+            if (downloadPdfButton) {
+                downloadPdfButton.addEventListener('click', downloadAsPdf);
+            }
+
+            // 初期化処理
+            loadAndDisplayCase();
+        });
+    </script>
+</body>
+</html>

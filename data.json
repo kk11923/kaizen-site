@@ -1,0 +1,30 @@
+[
+  {
+    "id": "001",
+    "date_reported": "2023-10-01",
+    "date_improved": "2023-10-05",
+    "location": "第1工場 組立ラインA",
+    "improver": "田中一郎",
+    "category": ["5S", "安全"],
+    "summary": "通路に工具が放置されており、つまずきの危険性があった。",
+    "problem_details": "組立ラインAの通路脇に、使用後の手動工具が複数放置されていた。作業者が通行する際に足を引っ掛け、転倒するリスクが高い状態だった。",
+    "improvement_details": "工具専用の置き場所を新たに設け、使用後は必ずそこへ戻すルールを徹底した。また、定期的な巡回で見守りを強化し、再発防止に努める。結果として、通路の安全性が向上し、作業効率も改善された。",
+    "before_image": "images/before001.webp",
+    "after_image": "images/after001.webp",
+    "thumbnail_image": "images/thumb001.webp"
+  },
+  {
+    "id": "002",
+    "date_reported": "2023-11-15",
+    "date_improved": "2023-11-20",
+    "location": "本社オフィス 3階 給湯室",
+    "improver": "佐藤花子",
+    "category": ["5S", "備品管理"],
+    "summary": "給湯室の共有備品が整理されておらず、必要なものが見つけにくい。",
+    "problem_details": "マグカップ、お茶の葉、インスタントコーヒーなどが雑然と置かれており、在庫も不明確。毎朝の準備に時間がかかっていた。",
+    "improvement_details": "収納棚にラベルを貼り、定位置管理を導入。在庫管理表を作成し、誰でも残量がわかるようにした。結果、備品を探す時間が大幅に短縮され、快適な給湯室になった。",
+    "before_image": "images/before002.webp",
+    "after_image": "images/after002.webp",
+    "thumbnail_image": "images/thumb002.webp"
+  }
+]

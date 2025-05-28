@@ -1,0 +1,261 @@
+      /* 基本的なリセットと共通スタイル */
+body {
+    font-family: 'Helvetica Neue', Arial, 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', Meiryo, sans-serif;
+    line-height: 1.6;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+    color: #333;
+}
+
+header {
+    background: #333;
+    color: #fff;
+    padding: 1rem 0;
+    text-align: center;
+}
+
+header h1 {
+    margin: 0;
+    font-size: 1.8rem;
+}
+
+main {
+    display: flex; /* サイドバーとコンテンツを横並びにするため */
+    padding: 20px;
+    max-width: 1200px; /* 最大幅を設定 */
+    margin: 20px auto; /* 中央寄せ */
+    background-color: #fff;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+.sidebar {
+    width: 250px;
+    padding-right: 20px;
+    border-right: 1px solid #ddd;
+}
+
+.sidebar h2, .sidebar h3 {
+    margin-top: 0;
+    color: #555;
+}
+
+.search-container input[type="text"] {
+    width: calc(100% - 22px); /* padding と border を考慮 */
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.filter-container .filter-option {
+    margin-bottom: 8px;
+}
+
+.filter-container label {
+    margin-left: 5px;
+    cursor: pointer;
+}
+
+.content {
+    flex: 1; /* 残りのスペースをすべて使う */
+    padding-left: 20px;
+}
+
+.content h2 {
+    margin-top: 0;
+}
+
+/* 事例一覧アイテム (index.html) */
+.case-list-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); /* レスポンシブなグリッド */
+    gap: 20px;
+}
+
+.case-item {
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 15px;
+    box-shadow: 2px 2px 5px rgba(0,0,0,0.05);
+    display: flex; /* サムネイルとテキストを横並び */
+    flex-direction: column; /* 中身は縦に */
+}
+
+.case-item .thumbnail {
+    width: 100%;
+    height: 150px; /* 高さを固定 */
+    object-fit: cover; /* アスペクト比を保ちつつエリアを埋める */
+    margin-bottom: 10px;
+    border-radius: 3px;
+}
+.case-item-content {
+    flex-grow: 1; /* ボタンが下に来るように */
+    display: flex;
+    flex-direction: column;
+}
+.case-item-content h3 {
+    margin-top: 0;
+    margin-bottom: 10px;
+    font-size: 1.1rem;
+    color: #333;
+}
+.case-item-content p {
+    font-size: 0.9rem;
+    margin-bottom: 5px;
+    color: #555;
+}
+.case-item-content .categories {
+    margin-bottom: 10px;
+}
+.category-tag {
+    background-color: #e0e0e0;
+    color: #333;
+    padding: 3px 8px;
+    border-radius: 3px;
+    font-size: 0.8rem;
+    margin-right: 5px;
+    display: inline-block; /* タグが改行されないように */
+    margin-bottom: 5px; /* 複数行になった場合の余白 */
+}
+
+.detail-button, .back-button {
+    display: inline-block;
+    background: #5cb85c;
+    color: white;
+    padding: 8px 15px;
+    text-decoration: none;
+    border-radius: 4px;
+    text-align: center;
+    margin-top: auto; /* ボタンをカードの最下部に配置 */
+    transition: background-color 0.3s ease;
+}
+.detail-button:hover, .back-button:hover {
+    background: #4cae4c;
+}
+.back-button {
+    background-color: #f0ad4e;
+}
+.back-button:hover {
+    background-color: #eea236;
+}
+
+
+/* 詳細ページ (detail.html) */
+.detail-container {
+    padding: 20px;
+}
+.detail-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* ビフォー・アフターを横並び */
+    gap: 20px;
+    align-items: start; /* 上端揃え */
+}
+.detail-header {
+    grid-column: 1 / -1; /* 2カラム分使う */
+    margin-bottom: 15px;
+}
+.detail-header h2 {
+    margin-top: 0;
+    margin-bottom: 5px;
+}
+.detail-header .categories {
+    margin-bottom: 10px;
+}
+
+.detail-meta {
+    grid-column: 1 / -1; /* 2カラム分使う */
+    background-color: #f9f9f9;
+    padding: 15px;
+    border-radius: 4px;
+    margin-bottom: 20px;
+    font-size: 0.9rem;
+}
+.detail-meta p {
+    margin: 5px 0;
+}
+
+.detail-before, .detail-after {
+    border: 1px solid #eee;
+    padding: 15px;
+    border-radius: 4px;
+}
+.detail-before h3, .detail-after h3 {
+    margin-top: 0;
+    color: #444;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 5px;
+    margin-bottom: 10px;
+}
+.detail-before img, .detail-after img {
+    width: 100%;
+    max-width: 100%; /* 親要素を超えないように */
+    height: auto;
+    border-radius: 4px;
+    margin-bottom: 10px;
+}
+.problem-description, .improvement-description {
+    font-size: 0.95rem;
+    white-space: pre-wrap; /* 改行を保持 */
+}
+
+.actions-container {
+    margin-top: 30px;
+    text-align: center;
+    padding: 20px;
+    border-top: 1px solid #ddd;
+}
+#downloadPdfButton {
+    background: #d9534f;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 1rem;
+    margin-right: 10px;
+    transition: background-color 0.3s ease;
+}
+#downloadPdfButton:hover {
+    background: #c9302c;
+}
+#downloadPdfButton:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+}
+
+
+footer {
+    text-align: center;
+    padding: 20px;
+    background: #333;
+    color: #fff;
+    margin-top: 30px;
+}
+
+/* レスポンシブ対応 (スマートフォンなど) */
+@media (max-width: 768px) {
+    main {
+        flex-direction: column; /* サイドバーとコンテンツを縦並びにする */
+        padding: 10px;
+        margin: 10px;
+    }
+    .sidebar {
+        width: 100%;
+        padding-right: 0;
+        border-right: none;
+        border-bottom: 1px solid #ddd;
+        margin-bottom: 20px;
+        padding-bottom: 20px;
+    }
+    .content {
+        padding-left: 0;
+    }
+    .case-list-container {
+        grid-template-columns: 1fr; /* 1カラムにする */
+    }
+    .detail-grid {
+        grid-template-columns: 1fr; /* ビフォー・アフターも縦並び */
+    }
+}
